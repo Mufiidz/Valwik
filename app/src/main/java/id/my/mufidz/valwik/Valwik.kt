@@ -3,6 +3,7 @@ package id.my.mufidz.valwik
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import coil.disk.DiskCache
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -28,6 +29,12 @@ class Valwik : Application(), ImageLoaderFactory {
     override fun newImageLoader(): ImageLoader =
         ImageLoader.Builder(this)
             .crossfade(true)
+            .crossfade(1000)
             .respectCacheHeaders(false)
-            .build()
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(cacheDir.resolve("image_cache"))
+                    .maxSizePercent(0.02)
+                    .build()
+            }.build()
 }
